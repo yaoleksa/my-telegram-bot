@@ -15,14 +15,19 @@ app.use(express.static('static'));
 // create bot
 const tb = new Telegraf('5920614032:AAHP9b8SiOpOGoTD9I1RZBBOeVyuqllGZHk');
 
-// define start command
-tb.command('start', ctx => {
+// define bot commands
+tb.start(ctx => {
     ctx.reply('Привіт! Я створений для того, щоб говорити тобі якісь пафосні цитати\n' + 
     'і цікаві факти про котів' +
     'Я нещодавно в Україні, цій прекрасній країні, тому ще не встиг досконало вивчити українську\n' +
     'Тому, на жаль, я буду писати тобі англійською');
 }).catch(e => {
     console.log(`Error occured when try to start bot: ${e.message}`);
+});
+
+tb.action('info');
+tb.command('info', ctx => {
+    ctx.reply('yes, this is info');
 });
 
 // define error handling
@@ -74,6 +79,10 @@ app.get('/', (req, res) => {
 });
 
 // launch bot
-tb.launch().catch(e => {
-    console.log(`Error occured when try to launch bot: ${e.message}`);
-});
+let status = true;
+if(status){
+    tb.launch().catch(e => {
+        console.log(`Error occured when try to start bot: ${e.message}`);
+    });
+    status = false;
+}
