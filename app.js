@@ -79,10 +79,9 @@ app.get('/', (req, res) => {
 });
 
 // launch bot
-let status = true;
-if(status){
+app.listen(port, () => {
+    console.log(`http://localhost:${port}`);
     tb.launch().catch(e => {
-        console.log(`Error occured when try to start bot: ${e.message}`);
-    });
-    status = false;
-}
+        console.log(`Error was occured when try to launch bot: ${e.message}`);
+    })
+});
