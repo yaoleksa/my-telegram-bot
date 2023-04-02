@@ -1,7 +1,6 @@
 // all packages init
 const express = require('express');
 const { Telegraf } = require('telegraf');
-const { message } = require('telegraf/filters');
 const axios = require('axios');
 
 // define port
@@ -22,6 +21,14 @@ tb.command('start', ctx => {
     'і цікаві факти про котів' +
     'Я нещодавно в Україні, цій прекрасній країні, тому ще не встиг досконало вивчити українську\n' +
     'Тому, на жаль, я буду писати тобі англійською');
+}).catch(e => {
+    console.log(`Error occured when try to start bot: ${e.message}`);
+});
+
+// define error handling
+tb.catch((e, ctx) => {
+    console.log(`Error occured: ${e.message}`);
+    console.log(`Wait some time: ${ctx.updateType}`);
 });
 
 // Fetch interesting answer
@@ -43,7 +50,6 @@ axios.get('https://quotes15.p.rapidapi.com/quotes/random/', {
 let answer;
 
 // defeine general answer
-
 tb.hears(/[a-zA-Z0-9]/, ctx => {
     answer = parseInt(Math.random() * 2) > 0 ? catsFact : q;
     ctx.reply(answer);
@@ -58,6 +64,8 @@ tb.hears(/[a-zA-Z0-9]/, ctx => {
     }).then(respons => {
         q = respons.data.content;
     });
+}).catch(e => {
+    console.log(`Error occured when try to handle input message: ${e.message}`);
 });
 
 // define GET server handler
@@ -66,4 +74,6 @@ app.get('/', (req, res) => {
 });
 
 // launch bot
-tb.launch();
+tb.launch().catch(e => {
+    console.log(`Error occured when try to launch bot: ${e.message}`);
+});
