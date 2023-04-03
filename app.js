@@ -55,7 +55,7 @@ axios.get('https://quotes15.p.rapidapi.com/quotes/random/', {
 let answer;
 
 // defeine general answer
-tb.hears(/[a-zA-Z0-9]/, ctx => {
+tb.on('message', ctx => {
     answer = parseInt(Math.random() * 2) > 0 ? catsFact : q;
     ctx.reply(answer);
     axios.get('https://catfact.ninja/fact').then(respons => {
@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 // launch bot
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
-    tb.launch().catch(e => {
+    tb.launch({polling: {timeout: 1}}).catch(e => {
         console.log(`Error was occured when try to launch bot: ${e.message}`);
-    })
+    });
 });
