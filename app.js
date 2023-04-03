@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 // launch bot
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
-    tb.launch({polling: {timeout: 1}}).catch(e => {
+    tb.launch().catch(e => {
         console.log(`Error was occured when try to launch bot: ${e.message}`);
     });
-});
+})
